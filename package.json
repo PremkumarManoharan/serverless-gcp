@@ -1,0 +1,16 @@
+{
+  "name": "serverless",
+  "version": "1.0.0",
+  "description": "cloud functions to deploy in GCP",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Prem Kumar",
+  "license": "ISC",
+
+  "dependencies": {
+    "@mailchimp/mailchimp_transactional": "^1.0.59",
+    "@google-cloud/functions-framework": "^3.0.0"
+  }
+}
