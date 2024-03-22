@@ -1,0 +1,29 @@
+name: Zip and Upload to GCP Bucket
+
+on:
+  push:
+    branches:
+      - main  # Set to your default branch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Zip files
+      run: zip -r archive.zip .
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+    - name: Create GCP Bucket if not exists
+      run: |
+          if ! gsutil ls gs://cloud-functions/; then
+            gsutil mb gs://cloud-functions/
+          fi
+
+    - name: Upload to Google Cloud Storage
+      run: gsutil cp archive.zip gs://cloud-functions/
