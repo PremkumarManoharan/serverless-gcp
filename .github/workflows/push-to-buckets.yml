@@ -22,11 +22,5 @@ jobs:
     - name: Set GCP Project ID
       run: gcloud config set project '${{ secrets.GCP_PROJECT_ID }}'
 
-    - name: Create GCP Bucket if not exists
-      run: |
-          if ! gsutil ls gs://cloud-functions/; then
-            gsutil mb gs://cloud-functions/
-          fi
-
     - name: Upload to Google Cloud Storage
-      run: gsutil cp archive.zip gs://cloud-functions/
+      run: gsutil cp archive.zip gs://cloud-functions-csye6225/
