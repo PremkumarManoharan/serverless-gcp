@@ -1,6 +1,6 @@
 const functions = require('@google-cloud/functions-framework');
 const mailchimp = require('@mailchimp/mailchimp_transactional')(process.env.API_KEY);
-const { Pool }  = require('pg');
+const axios = require('axios');
 
 functions.cloudEvent('sendEmail', cloudEvent => {
 
@@ -10,40 +10,20 @@ functions.cloudEvent('sendEmail', cloudEvent => {
   console.log(username);
   console.log(token);
 
-  const verificationLink = "http://kefihub.in/verify?username="+username+"&token="+token;
+  const verificationLink = "http://kefihub.in:3000/v1/user/verify?username="+username+"&token="+token;
 
-    const pool = new Pool({
-        user: process.env.PG_USER,
-        host: process.env.PG_HOST,
-        database: process.env.PG_DB,
-        password: process.env.PG_PASSWORD,
-        port: '5432',
-    });
-
-    updateDatabase = async (username) => {
-
-    const client = await pool.connect();
-
+  performGetRequest = async (req, res) => {
+    const url = 'http://kefihub.in:3000/v1/user/emailSent?username='+username;
     try {
-       
-        console.log(username);
-        const now = new Date();
-        const twoMinutesInMilliseconds = 2 * 60 * 1000; // Convert 2 minutes to milliseconds
-        const validity = new Date(now.getTime() + twoMinutesInMilliseconds); // Add 2 minutes to 'now'
-        const sql = 'UPDATE public."Users" SET "tokenValidity" = $1 WHERE username = $2';
-        const values = [validity, username];
-        await client.query(sql, values);
+      const response = await axios.get(url);
+      console.log('Data updated successfully:', response.data);
+      res.status(200).json(response.data);
     } catch (error) {
-        console.error('Error executing the query', error.stack);
-    } finally {
-        client.release();
+      console.error('Error during GET request:', error.message);
+      res.status(500).send('Failed to perform GET request');
     }
-    };
-
-
-
-    updateDatabase(username);
-
+  };
+  
   const message = {
     from_email: "no-reply@kefihub.in",
     subject: "Verify Your Email Address",
@@ -59,7 +39,8 @@ functions.cloudEvent('sendEmail', cloudEvent => {
   async function run() {
     console.log(message);
     // const response = await mailchimp.messages.send({ message });
-    console.log(response);
+    // console.log(response);
+    performGetRequest();
   }
 
   run().catch(console.error);
