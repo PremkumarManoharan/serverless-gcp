@@ -7,6 +7,7 @@ functions.cloudEvent('sendEmail', cloudEvent => {
   const base64data = cloudEvent.data.message.data;
 
   const { username,token } = JSON.parse(Buffer.from(base64data, 'base64').toString('utf-8'));
+
   console.log(username);
   console.log(token);
 
@@ -14,13 +15,12 @@ functions.cloudEvent('sendEmail', cloudEvent => {
 
   performGetRequest = async (req, res) => {
     const url = 'http://kefihub.in:3000/v1/user/emailSent?username='+username;
+    console.log(url);
     try {
-      const response = await axios.get(url);
-      console.log('Data updated successfully:', response.data);
-      res.status(200).json(response.data);
+      await axios.get(url);
+      console.log('Data updated successfully:');
     } catch (error) {
       console.error('Error during GET request:', error.message);
-      res.status(500).send('Failed to perform GET request');
     }
   };
   
@@ -38,8 +38,8 @@ functions.cloudEvent('sendEmail', cloudEvent => {
 
   async function run() {
     console.log(message);
-    // const response = await mailchimp.messages.send({ message });
-    // console.log(response);
+    const response = await mailchimp.messages.send({ message });
+    console.log(response);
     performGetRequest();
   }
 
