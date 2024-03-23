@@ -20,19 +20,17 @@ jobs:
       with:
         credentials_json:  ${{ secrets.GCP_SA_KEY }}
     
-    # Step to Authenticate with GCP
+
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
       with:
         version: '>= 363.0.0'
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-    # Step to Configure Docker to use the gcloud command-line tool as a credential helper
     - name: Configure Docker
       run: |-
         gcloud auth configure-docker
     
-    # Step to Upload the file to GCP Bucket
     - name: Upload to Google Cloud Storage
       run: |-
         gsutil cp verify-email-function-source.zip gs://cloud-functions-csye6225/verify-email-function-source.zip
