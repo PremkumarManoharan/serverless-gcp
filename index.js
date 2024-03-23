@@ -1,5 +1,5 @@
 const functions = require('@google-cloud/functions-framework');
-const mailchimp = require('@mailchimp/mailchimp_transactional')(process.env.api_key);
+const mailchimp = require('@mailchimp/mailchimp_transactional')(process.env.API_KEY);
 
 functions.cloudEvent('sendEmail', cloudEvent => {
   
