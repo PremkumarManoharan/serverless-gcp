@@ -54,7 +54,7 @@ const pool = new Pool({
       const now = new Date();
       const twoMinutesInMilliseconds = 2 * 60 * 1000; // Convert 2 minutes to milliseconds
       const validity = new Date(now.getTime() + twoMinutesInMilliseconds); // Add 2 minutes to 'now'
-      const updateQuery = 'UPDATE public."Users" SET tokenValidity = $1 WHERE username = $2';
+      const updateQuery = 'UPDATE public."Users" SET "tokenValidity" = $1 WHERE username = $2';
       const values = [validity, username];
 
       pool.query(updateQuery, values, (err, res) => {
