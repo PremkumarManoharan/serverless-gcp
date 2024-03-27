@@ -10,7 +10,7 @@ const pool = new Pool({
   host: process.env.PG_HOST,
   database: process.env.PG_DB,
   password: process.env.PG_PASSWORD,
-  port: 5432, // Default port for PostgreSQL
+  port: 5432,
 });
 
   const base64data = cloudEvent.data.message.data;
