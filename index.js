@@ -1,24 +1,8 @@
 const functions = require('@google-cloud/functions-framework');
-const dotenv = require('dotenv')
 const sgMail = require('@sendgrid/mail')
-dotenv.config()
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 const { Pool } = require('pg');
 
-
-
-
-async function test() {
-  const message = {
-    from: "no-reply@kefihub.in",
-    subject: "Verify Your Email Address",
-    html: `<p>Welcome to Our Service!</p><p>Please verify your email by clicking on the link below:</p><a href="">Verify Email</a>`,
-    to: "premmano98@gmail.com"
-  };
-  const status = await sgMail.send(message);
-  console.log(status);
-}
-test()
 functions.cloudEvent('sendEmail', cloudEvent => {
 
 const pool = new Pool({
