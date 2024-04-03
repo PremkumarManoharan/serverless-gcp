@@ -20,7 +20,7 @@ const pool = new Pool({
   console.log(username);
   console.log(token);
 
-  const verificationLink = "http://kefihub.in:3000/v1/user/verify?username="+username+"&token="+token;
+  const verificationLink = "https://kefihub.in/v1/user/verify?username="+username+"&token="+token;
   
   const message = {
     from: "no-reply@kefihub.in",
